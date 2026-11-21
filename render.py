@@ -364,7 +364,6 @@ def scene_kyiv(draw, x, y, w, h):
     draw.text((x + 195, y + 78), "UKRAINE", font=font(SANS_B, 9), fill=(240, 240, 230))
     # Kyiv marker + blast
     draw.ellipse([x + 218, y + 52, x + 226, y + 60], fill=RED, outline=(255, 255, 255), width=1)
-    draw.text((x + 230, y + 26), "KYIV", font=font(SANS_B, 9), fill=(255, 255, 255))
     explosion(draw, x + 222, y + 56, 13)
     explosion(draw, x + 276, y + 40, 9)
     explosion(draw, x + 178, y + 66, 8)
@@ -372,6 +371,7 @@ def scene_kyiv(draw, x, y, w, h):
     bezier_arc(draw, x + 300, y + 20, x + 222, y + 56, 26, (255, 120, 60), 3)
     bezier_arc(draw, x + 300, y + 34, x + 276, y + 40, 18, (255, 120, 60), 3)
     bezier_arc(draw, x + 150, y + 12, x + 118, y + 52, 14, (255, 160, 80), 3)
+    draw.text((x + 230, y + 26), "KYIV", font=font(SANS_B, 9), fill=(255, 255, 255))
     # red impact dots in Poland
     for dx, dy in [(112, 52), (128, 62)]:
         draw.ellipse([x + dx - 3, y + dy - 3, x + dx + 3, y + dy + 3], fill=RED,
@@ -387,11 +387,6 @@ def scene_cop(draw, x, y, w, h):
     # hall
     draw.rectangle([x + 12, y + 58, x + w - 12, y + h - 8], fill=(120, 96, 70))
     draw.rectangle([x + 12, y + 58, x + w - 12, y + 66], fill=(90, 70, 48))
-    # rows of delegates (heads + desks)
-    for row, ry in enumerate((74, 84)):
-        for cx in range(28, w - 20, 22):
-            draw.ellipse([x + cx - 4, y + ry - 4, x + cx + 4, y + ry + 4],
-                         fill=(60, 55, 48) if row == 0 else (80, 74, 64))
     # globe on the podium
     gx, gy = x + 34, y + 16
     draw.ellipse([gx, gy, gx + 34, gy + 34], fill=(70, 130, 180),
@@ -563,7 +558,6 @@ def mini_riemann(draw, x, y, s=62):
               fill=(255, 255, 255))
     draw.text((x + 8, y + 40), "2 3 5 7 11", font=font(SANS_B, 10),
               fill=(255, 220, 90))
-    draw.text((x + 44, y + 38), "?", font=font(SERIF_B, 18), fill=(255, 120, 80))
 
 
 def mini_gta(draw, x, y, s=62):
@@ -638,8 +632,8 @@ def mini_plane(draw, x, y, s=62):
                   (x + 48, y + 22)], fill=(220, 220, 220))
     draw.rectangle([x + 52, y + 6, x + 58, y + 10], fill=(200, 40, 40))
     # EXPELLED stamp
-    draw.rectangle([x + 6, y + 52, x + 56, y + 60], outline=RED, width=2)
-    centre(draw, x + 6, x + 56, y + 53, "EXPELLED", font(SANS_B, 7), fill=RED)
+    draw.rectangle([x + 6, y + 50, x + 56, y + 58], outline=RED, width=2)
+    centre(draw, x + 6, x + 56, y + 51, "EXPELLED", font(SANS_B, 7), fill=RED)
 
 
 def mini_gaza(draw, x, y, s=62):
@@ -751,6 +745,10 @@ def draw_medium(draw):
         tw = px + pw - 6 - tx
         draw.text((tx, py + 5), "%d  %s" % (num, region),
                   font=font(SANS_B, 9), fill=RED)
+        tf = font(SANS_B, 8)
+        tagstr = "%s · %s" % (tag, src)
+        draw.text((px + pw - 6 - text_w(draw, tagstr, tf), py + 5),
+                  tagstr, font=tf, fill=RED)
         hf = font(SERIF_B, 12)
         yy = py + 18
         for ln in wrap(draw, head, hf, tw)[:2]:
@@ -760,8 +758,6 @@ def draw_medium(draw):
         for ln in wrap(draw, deck, df, tw)[:2]:
             draw.text((tx, yy), ln, font=df, fill=(60, 58, 52))
             yy += 11
-        draw.text((tx, py + ph - 13), "%s · %s" % (tag, src),
-                  font=font(SANS_B, 8), fill=RED)
     hline(draw, 20, 1004, 626, width=2)
 
 
