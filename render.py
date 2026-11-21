@@ -140,32 +140,32 @@ MEDIUM = [
 
 # (number, region, headline, tag, source) -- numbered list.
 BRIEFS = [
-    (16, "NA", "Trump defends Putin ties; Zelensky hits back", "REPORTED", "BBC"),
+    (16, "NA", "Trump defends Putin ties", "REPORTED", "BBC"),
     (17, "NA", "Palisades fire arson conviction", "CONFIRMED", "BBC"),
-    (18, "LATAM", "Salvadoran troops fight gangs in Haiti; 3 die", "REPORTED", "Guardian"),
-    (19, "AFR", "Nigeria boat capsizes; ~30 dead, ~300 missing", "REPORTED", "Daily Trust"),
-    (20, "NA", "Indian man jailed 19 yrs in Sikh murder plot", "CONFIRMED", "BBC"),
-    (21, "AFR", "Uganda limits gatherings over Ebola", "OFFICIAL", "AllAfrica"),
-    (22, "EUR", "Spain heads to 29 Nov vote; banking tax eyed", "REPORTED", "ST"),
-    (23, "APAC", "Japan sidelined by China; ties at record low", "REPORTED", "Japan Times"),
+    (18, "LATAM", "Salvadoran troops fight Haiti gangs", "REPORTED", "Guardian"),
+    (19, "AFR", "Nigeria boat capsizes; 30 dead", "REPORTED", "Daily Trust"),
+    (20, "NA", "Indian jailed 19 yrs in murder plot", "CONFIRMED", "BBC"),
+    (21, "AFR", "Uganda limits events over Ebola", "OFFICIAL", "AllAfrica"),
+    (22, "EUR", "Spain vote 29 Nov; banking tax eyed", "REPORTED", "ST"),
+    (23, "APAC", "Japan sidelined by China", "REPORTED", "Japan Times"),
     (24, "AFR", "Mlambo-Ngcuka dies aged 71", "CONFIRMED", "ST"),
     (25, "LATAM", "Peru quake 6.7 shakes Junín", "REPORTED", "La Nación"),
     (26, "NA", "Trump: discussed Nvidia chief with Xi", "REPORTED", "CNBC"),
-    (27, "ME", "Iraq, Kata'ib Hezbollah agree joint presence", "REPORTED", "Al Jazeera"),
-    (28, "EUR", "Estonia to close 5 Russia border crossings", "OFFICIAL", "Euronews"),
+    (27, "ME", "Kata'ib Hezbollah agrees presence", "REPORTED", "Al Jazeera"),
+    (28, "EUR", "Estonia closes 5 Russia crossings", "OFFICIAL", "Euronews"),
     (29, "LATAM", "Bolsonaro in hospital with obstruction", "CONFIRMED", "DW"),
     (30, "APAC", "Nepal PM to visit India 22–23 Nov", "OFFICIAL", "BBC"),
-    (31, "EUR", "French police jailed over Zecler beating", "CONFIRMED", "BBC"),
+    (31, "EUR", "Police jailed over Zecler beating", "CONFIRMED", "BBC"),
     (32, "NA", "Mamdani: close Rikers Island by 2032", "OFFICIAL", "BBC"),
-    (33, "APAC", "Seoul ruling party moves to impeach chief justice", "REPORTED", "Yonhap"),
+    (33, "APAC", "Seoul moves to impeach chief justice", "REPORTED", "Yonhap"),
     (34, "LATAM", "Argentina country risk tops 1,000", "REPORTED", "BA Times"),
     (35, "NA", "Judge approves $7.25bn Roundup deal", "CONFIRMED", "BBC"),
-    (36, "AFR", "Tanzania's Lissu convicted of sedition", "CONFIRMED", "BBC"),
+    (36, "AFR", "Lissu convicted of sedition", "CONFIRMED", "BBC"),
     (37, "AFR", "Kenya starts onshore oil drilling", "REPORTED", "AllAfrica"),
-    (38, "EUR", "CERN finds ultra-rare decay evidence", "REPORTED", "SciDaily"),
+    (38, "EUR", "CERN finds ultra-rare decay", "REPORTED", "SciDaily"),
     (39, "ME", "Basra power station fire kills 4", "REPORTED", "Al Jazeera"),
     (40, "APAC", "Quake 6.8 off Timor", "REPORTED", "Yonhap"),
-    (41, "AFR", "700,000 displaced in southern Ethiopia", "REPORTED", "Africanews"),
+    (41, "AFR", "700,000 displaced in Ethiopia", "REPORTED", "Africanews"),
     (42, "EUR", "France probes Depardieu, Houellebecq", "REPORTED", "BBC"),
 ]
 
@@ -797,7 +797,7 @@ def draw_map(draw):
         s = str(n)
         draw.text((cx - text_w(draw, s, df) / 2, cy - 7), s, font=df,
                   fill=(255, 255, 255))
-    draw.text((mx0 + 6, my1 - 15), "WHERE IT HAPPENED — 12 PLACES",
+    draw.text((mx0 + 6, my0 + 6), "WHERE IT HAPPENED — 12 PLACES",
               font=font(SANS_B, 9), fill=GREY)
     lx = 712
     draw.text((lx, 632), "ON THE MAP", font=font(SANS_B, 12), fill=RED)
@@ -818,32 +818,36 @@ def draw_briefs(draw):
     row_h = 12
     y0 = 816
     nf = font(SANS_B, 10)
+    bf = font(SANS, 9)
     for idx, (num, region, head, tag, src) in enumerate(BRIEFS):
         col, row = divmod(idx, 9)
         x = cols_x[col]
         y = y0 + row * row_h
-        rest = "%s — %s · %s" % (head, tag, src)
+        suffix = " — %s · %s" % (tag, src)
         nx = x + (16 if num < 10 else 20)
-        f = fit_font(draw, rest, SANS, 11, 8, col_w - (nx - x) - 4)
+        avail = col_w - (nx - x) - 4 - text_w(draw, suffix, bf)
+        h = head
+        while h and text_w(draw, h + "…", bf) > avail:
+            h = h.rsplit(" ", 1)[0] if " " in h else h[:-1]
+        rest = h + ("…" if h != head else "") + suffix
         draw.text((x, y), str(num), font=nf, fill=RED)
-        draw.text((nx, y), rest, font=f, fill=INK)
-    hline(draw, 20, 1004, 930, width=2)
+        draw.text((nx, y), rest, font=bf, fill=INK)
+    hline(draw, 20, 1004, 928, width=2)
 
 
 def draw_bottom(draw):
     # DATE CHECK box
     bx0, bx1 = 20, 640
-    by0 = 936
-    draw.rectangle([bx0, by0, bx1, 1012], outline=RED, width=2)
+    by0 = 932
+    draw.rectangle([bx0, by0, bx1, 1004], outline=RED, width=2)
     draw.text((bx0 + 10, by0 + 5), "DATE CHECK",
               font=font(SANS_B, 12), fill=RED)
     df = font(SANS, 10)
     lines = [
         "Every story here happened, or was first reported, on Sat 21 Nov 2026.",
         "LEFT OUT (other dates): ICJ Myanmar ruling (19 Nov) · Shenzhen summit (19 Nov) ·",
-        "Anthropic IPO debut (19 Nov) · measles status lost (19–20 Nov) · air-taxi demo (20 Nov) ·",
-        "contractor order (20 Nov) · 'El Chapo Isidro' captured (20 Nov) · Christmas tree raised (20 Nov).",
-        "NOT YET: COP31 deal (in overtime) · Nepal PM's India visit (22–23 Nov) · Spain's election (29 Nov).",
+        "Anthropic IPO debut (19 Nov) · measles status lost (19–20 Nov) · air-taxi demo (20 Nov).",
+        "NOT YET: COP31 deal (in overtime) · Nepal PM's India visit (22–23 Nov) · Spain vote (29 Nov).",
     ]
     y = by0 + 21
     for ln in lines:
@@ -851,7 +855,7 @@ def draw_bottom(draw):
         y += 11
     # BY THE NUMBERS box
     nx0, nx1 = 656, 1004
-    draw.rectangle([nx0, by0, nx1, 1012], fill=LIGHT, outline=RULE, width=1)
+    draw.rectangle([nx0, by0, nx1, 1004], fill=LIGHT, outline=RULE, width=1)
     draw.text((nx0 + 10, by0 + 5), "BY THE NUMBERS — FRI 20 NOV CLOSE",
               font=font(SANS_B, 12), fill=INK)
     nf = font(SANS_B, 10)
@@ -869,7 +873,7 @@ def draw_bottom(draw):
     ff = font(SANS, 9)
     foot = ("Sources: BBC, Reuters, AP, AFP, The Guardian, national outlets — "
             "full list in the repo SOURCES.md. Figures as reported 21 Nov 2026.")
-    draw.text((20, 1014), foot, font=ff, fill=GREY)
+    draw.text((20, 1009), foot, font=ff, fill=GREY)
 
 
 def main():
