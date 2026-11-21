@@ -197,8 +197,11 @@ DOTS = [
     (-75.0, -11.0, 25),  # Junín, Peru
 ]
 
-# Display displacement for dots too close to a neighbour: story number -> (lon, lat)
-LEADERS = {4: (-6.0, 53.5), 15: (36.5, 26.5)}
+# Display displacement for dots too close to a neighbour: story number -> (lon, lat).
+# The displaced spot MUST be on drawn land, never in the sea — a dot floating
+# in open sea reads as a mistake even with a leader line (Hendri caught this
+# twice: Haiti, then London + Gaza). London goes to N Scotland, Gaza to Jordan.
+LEADERS = {4: (-4.5, 58.0), 15: (39.5, 31.5)}
 
 MAP_LEGEND = [
     # Geographic order (not story order): the legend reads as a list of
@@ -246,7 +249,7 @@ AFRICA = [(-17, 15), (-17, 21), (-15, 27), (-10, 31), (-5, 35), (0, 36),
           (43, 11), (46, 11), (51, 12), (51, 10), (48, 5), (45, 2),
           (41, -2), (40, -6), (39, -12), (36, -18), (33, -26), (30, -32),
           (26, -34), (20, -35), (17, -32), (15, -27), (13, -18), (12, -12),
-          (13, -6), (9, -1), (9, 4), (4, 6), (-3, 5), (-8, 5), (-13, 8),
+          (13, -6), (9, -1), (9, 3), (4, 6), (-3, 5), (-8, 5), (-13, 8),
           (-17, 12), (-17, 15)]
 EUROPE = [(-10, 36), (-9, 38), (-9, 43), (-2, 44), (-1, 46), (-4, 48),
           (-2, 50), (0, 51), (3, 53), (5, 53), (8, 55), (8, 57), (10, 58),
@@ -273,13 +276,13 @@ ASIA = [(30, 36), (36, 36), (42, 35), (44, 38), (48, 38), (50, 40),
         (100, 2), (98, 6), (96, 10), (94, 14), (92, 16), (90, 20),
         (88, 22), (86, 20), (84, 18), (82, 16), (80, 14), (78, 10),
         (76, 8), (74, 12), (72, 16), (70, 20), (68, 22), (66, 24),
-        (64, 25), (62, 25), (60, 25), (58, 25), (56, 26), (54, 26),
-        (52, 28), (50, 29), (48, 30), (46, 30), (44, 31), (42, 33),
-        (40, 36), (38, 36), (36, 36)]
+        (64, 25), (62, 25), (60, 25), (58, 23), (56, 20), (54, 17),
+        (50, 15), (46, 13), (43, 12), (41, 14), (39, 18), (38, 22),
+        (37, 26), (35, 29), (33, 31), (35, 33), (36, 36)]
 JAPAN = [(130, 31), (132, 33), (134, 34), (136, 35), (138, 35), (140, 36),
          (141, 39), (142, 42), (144, 44), (142, 44), (140, 42), (139, 38),
          (137, 35), (135, 33), (132, 32), (130, 31)]
-BRITAIN = [(-5, 50), (-3, 53), (-5, 56), (-3, 58), (-1, 57), (0, 53),
+BRITAIN = [(-5, 50), (-3, 53), (-5, 56), (-5, 59), (-2, 59), (-1, 57), (0, 53),
            (1, 51), (-3, 50), (-5, 50)]
 AUSTRALIA = [(114, -22), (114, -30), (115, -35), (120, -34), (124, -33),
              (129, -32), (132, -32), (135, -35), (137, -38), (140, -38),
@@ -802,21 +805,21 @@ def draw_map(draw):
     for lon in range(-150, 181, 30):
         x = mx0 + (lon + 180.0) * sx
         draw.line([(x, my0), (x, my1)], fill=(210, 217, 212), width=1)
-    df = font(SANS_B, 10)
+    df = font(SANS_B, 8)
     for lon, lat, n in DOTS:
         if n in LEADERS:
             dlon, dlat = LEADERS[n]
             tx, ty = project(lon, lat, mx0, my0, sx, sy)
             cx, cy = project(dlon, dlat, mx0, my0, sx, sy)
-            draw.line([(tx, ty), (cx, cy)], fill=RED, width=1)
+            draw.line([(tx, ty), (cx, cy)], fill=RED, width=2)
             draw.ellipse([tx - 2, ty - 2, tx + 2, ty + 2], fill=RED)
         else:
             cx, cy = project(lon, lat, mx0, my0, sx, sy)
-        r = 8
+        r = 6
         draw.ellipse([cx - r, cy - r, cx + r, cy + r], fill=RED,
                      outline=(255, 255, 255), width=2)
         s = str(n)
-        draw.text((cx - text_w(draw, s, df) / 2, cy - 7), s, font=df,
+        draw.text((cx - text_w(draw, s, df) / 2, cy - 5), s, font=df,
                   fill=(255, 255, 255))
     draw.text((mx0 + 6, my0 + 6), "WHERE IT HAPPENED — 12 OF 42 STORIES, NUMBERED BY STORY",
               font=font(SANS_B, 9), fill=GREY)
