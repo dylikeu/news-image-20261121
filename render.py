@@ -288,8 +288,28 @@ NEW_ZEALAND = [(167, -45), (170, -43), (173, -41), (175, -38), (177, -38),
 INDONESIA = [(95, 5), (98, 3), (101, 0), (104, -3), (106, -6), (110, -7),
              (114, -8), (114, -10), (110, -8), (106, -6), (102, -4),
              (99, 0), (96, 3), (95, 5)]
+# Caribbean islands -- small but must be drawn, or the Haiti dot floats on sea.
+# Hispaniola is drawn slightly enlarged so it still reads around its dot.
+CARIBBEAN = [
+    # Cuba
+    [(-84.8, 22.8), (-83.0, 23.3), (-80.5, 23.0), (-78.0, 22.2),
+     (-75.5, 21.0), (-74.2, 20.2), (-75.8, 20.4), (-78.5, 21.2),
+     (-81.0, 22.2), (-83.5, 22.0), (-84.8, 21.8)],
+    # Hispaniola (Haiti + Dominican Republic)
+    [(-74.8, 20.2), (-73.0, 20.4), (-71.0, 19.9), (-69.0, 19.2),
+     (-68.5, 18.2), (-69.5, 17.6), (-71.5, 17.8), (-73.0, 18.2),
+     (-74.3, 18.6), (-74.8, 19.4)],
+    # Jamaica
+    [(-78.3, 18.4), (-77.0, 18.5), (-76.2, 18.0), (-77.0, 17.9),
+     (-78.3, 18.0)],
+    # Puerto Rico
+    [(-67.2, 18.5), (-66.0, 18.5), (-65.6, 18.1), (-66.5, 17.9),
+     (-67.2, 18.1)],
+]
+
 CONTINENTS = [NORTH_AMERICA, GREENLAND, SOUTH_AMERICA, AFRICA, EUROPE,
-              ASIA, JAPAN, BRITAIN, AUSTRALIA, NEW_ZEALAND, INDONESIA]
+              ASIA, JAPAN, BRITAIN, AUSTRALIA, NEW_ZEALAND, INDONESIA,
+              *CARIBBEAN]
 
 
 
@@ -355,13 +375,13 @@ def scene_kyiv(draw, x, y, w, h):
         draw.ellipse([x + sx - 1, y + sy - 1, x + sx + 1, y + sy + 1],
                      fill=(220, 220, 200))
     # landmass: Ukraine (big) + Poland (left)
-    ukr = [(150, 40), (210, 34), (265, 42), (290, 55), (280, 75), (240, 88),
-           (190, 86), (155, 72), (140, 55)]
+    ukr = [(150, 40), (210, 34), (265, 42), (290, 55), (280, 75), (240, 84),
+           (190, 84), (155, 72), (140, 55)]
     pol = [(95, 38), (140, 34), (155, 48), (145, 70), (110, 74), (92, 58)]
     draw.polygon([(x + px, y + py) for px, py in ukr], fill=(120, 130, 110))
     draw.polygon([(x + px, y + py) for px, py in pol], fill=(150, 158, 140))
-    draw.text((x + 108, y + 78), "POLAND", font=font(SANS_B, 9), fill=(240, 240, 230))
-    draw.text((x + 195, y + 78), "UKRAINE", font=font(SANS_B, 9), fill=(240, 240, 230))
+    draw.text((x + 108, y + 75), "POLAND", font=font(SANS_B, 9), fill=(240, 240, 230))
+    draw.text((x + 195, y + 75), "UKRAINE", font=font(SANS_B, 9), fill=(240, 240, 230))
     # Kyiv marker + blast
     draw.ellipse([x + 218, y + 52, x + 226, y + 60], fill=RED, outline=(255, 255, 255), width=1)
     explosion(draw, x + 222, y + 56, 13)
@@ -556,7 +576,7 @@ def mini_riemann(draw, x, y, s=62):
               fill=(255, 255, 255))
     draw.text((x + 8, y + 24), "Re(s) = ½", font=font(SERIF, 11),
               fill=(255, 255, 255))
-    draw.text((x + 8, y + 40), "2 3 5 7 11", font=font(SANS_B, 10),
+    draw.text((x + 7, y + 40), "2 3 5 7 11", font=font(SANS_B, 10),
               fill=(255, 220, 90))
 
 
@@ -638,10 +658,10 @@ def mini_plane(draw, x, y, s=62):
 
 def mini_gaza(draw, x, y, s=62):
     draw.rectangle([x, y, x + s, y + s], fill=(226, 232, 228))
-    # coastline + strip outline
-    draw.rectangle([x, y + 8, x + 18, y + s], fill=(120, 170, 200))
-    draw.polygon([(x + 18, y + 10), (x + 30, y + 8), (x + 34, y + 50),
-                  (x + 22, y + 54), (x + 18, y + 40)], fill=(196, 205, 190),
+    # coastline + strip outline (shortened so the bottom band stays clear)
+    draw.rectangle([x, y + 8, x + 18, y + 44], fill=(120, 170, 200))
+    draw.polygon([(x + 18, y + 10), (x + 30, y + 8), (x + 34, y + 44),
+                  (x + 22, y + 48), (x + 18, y + 40)], fill=(196, 205, 190),
                  outline=INK)
     draw.text((x + 36, y + 10), "GAZA", font=font(SANS_B, 8), fill=INK)
     # hospital with cross
@@ -649,7 +669,7 @@ def mini_gaza(draw, x, y, s=62):
                    outline=INK, width=1)
     draw.rectangle([x + 43, y + 30, x + 49, y + 42], fill=RED)
     draw.rectangle([x + 39, y + 34, x + 53, y + 38], fill=RED)
-    draw.text((x + 36, y + 50), "9 KILLED", font=font(SANS_B, 8), fill=RED)
+    draw.text((x + 4, y + 52), "9 KILLED", font=font(SANS_B, 8), fill=RED)
 
 
 MINI_SCENES = {
