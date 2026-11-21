@@ -179,38 +179,40 @@ TIMELINE = [
     ("~20:00", "COP31 in overtime; Geneva backs AI-weapons talks"),
 ]
 
-# (lon, lat, number) -- places marked on the map.
+# (lon, lat, story number) -- places marked on the map. The number is the
+# STORY number (same as the hero/medium/brief numbers), so a reader can
+# match every dot to its story. Two dots share story 1 (Kyiv + Poland).
 DOTS = [
     (31.5, 50.5, 1),     # Kyiv
-    (22.5, 50.0, 2),     # SE Poland
-    (30.7, 36.9, 3),     # Antalya
-    (4.4, 50.8, 4),      # Brussels
-    (-0.1, 51.5, 5),     # London (displaced, see LEADERS)
-    (46.7, 24.6, 6),     # Riyadh
+    (22.5, 50.0, 1),     # SE Poland
+    (30.7, 36.9, 2),     # Antalya
+    (4.4, 50.8, 3),      # Brussels
+    (-0.1, 51.5, 4),     # London (displaced, see LEADERS)
+    (46.7, 24.6, 8),     # Riyadh
     (56.5, 26.5, 7),     # Strait of Hormuz
-    (34.5, 31.5, 8),     # Gaza (displaced, see LEADERS)
-    (-77.0, 38.9, 9),    # Washington
-    (-72.3, 18.5, 10),   # Port-au-Prince
-    (6.0, 5.0, 11),      # Bayelsa, Nigeria
-    (-75.0, -11.0, 12),  # Junín, Peru
+    (34.5, 31.5, 15),    # Gaza (displaced, see LEADERS)
+    (-77.0, 38.9, 6),    # Washington
+    (-72.3, 18.5, 18),   # Port-au-Prince
+    (6.0, 5.0, 19),      # Bayelsa, Nigeria
+    (-75.0, -11.0, 25),  # Junín, Peru
 ]
 
-# Display displacement for dots too close to a neighbour: number -> (lon, lat)
-LEADERS = {5: (-6.0, 53.5), 8: (36.5, 26.5)}
+# Display displacement for dots too close to a neighbour: story number -> (lon, lat)
+LEADERS = {4: (-6.0, 53.5), 15: (36.5, 26.5)}
 
 MAP_LEGEND = [
     ("1", "Kyiv — barrage, 8 killed"),
-    ("2", "Poland — missiles land"),
-    ("3", "Antalya — COP31 overtime"),
-    ("4", "Brussels — UK-EU deals"),
-    ("5", "London — cancer-pill trial"),
-    ("6", "Riyadh — missiles downed"),
+    ("1", "Poland — missiles land"),
+    ("2", "Antalya — COP31 overtime"),
+    ("3", "Brussels — UK-EU deals"),
+    ("4", "London — cancer-pill trial"),
+    ("6", "Washington — FBI hack"),
     ("7", "Hormuz — tankers hit"),
-    ("8", "Gaza — nine killed"),
-    ("9", "Washington — FBI hack"),
-    ("10", "Haiti — troops fight gangs"),
-    ("11", "Bayelsa — boat capsizes"),
-    ("12", "Junín — quake 6.7"),
+    ("8", "Riyadh — missiles downed"),
+    ("15", "Gaza — nine killed"),
+    ("18", "Haiti — troops fight gangs"),
+    ("19", "Bayelsa — boat capsizes"),
+    ("25", "Junín — quake 6.7"),
 ]
 
 # Rough continent outlines, (lon, lat). Stylised, not to scale.
@@ -813,7 +815,7 @@ def draw_map(draw):
         s = str(n)
         draw.text((cx - text_w(draw, s, df) / 2, cy - 7), s, font=df,
                   fill=(255, 255, 255))
-    draw.text((mx0 + 6, my0 + 6), "WHERE IT HAPPENED — 12 PLACES",
+    draw.text((mx0 + 6, my0 + 6), "WHERE IT HAPPENED — 12 OF 42 STORIES, NUMBERED BY STORY",
               font=font(SANS_B, 9), fill=GREY)
     lx = 712
     draw.text((lx, 632), "ON THE MAP", font=font(SANS_B, 12), fill=RED)
