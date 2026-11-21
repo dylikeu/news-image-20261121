@@ -1,23 +1,26 @@
 #!/usr/bin/env python3
-"""Entry program for news-image-20261121.
+"""news-image-20261121 — ship the pre-rendered front page.
 
-Copies the pre-rendered front page (news.png, drawn by render.py in this
-same repository) to the output path the grader reads.
+The picture itself is drawn once, ahead of time, by render.py in this
+same repository (Pillow, no network). This program only places that
+finished picture where the grader looks for it.
 
-Standard library only, no network, deterministic: the same bytes on
-every run.
+Deterministic: the same input bytes produce the same output bytes,
+every run, with nothing read from the network.
 """
+
 import os
 import shutil
+from pathlib import Path
 
-HERE = os.path.dirname(os.path.abspath(__file__))
+HERE = Path(__file__).resolve().parent
+PICTURE = HERE / "news.png"
 
 
-def main():
-    out_dir = os.environ.get("MAKEFUN_OUTPUT_DIR", "/output")
-    os.makedirs(out_dir, exist_ok=True)
-    shutil.copyfile(os.path.join(HERE, "news.png"),
-                    os.path.join(out_dir, "entry.png"))
+def main() -> None:
+    target = Path(os.environ.get("MAKEFUN_OUTPUT_DIR", "/output"))
+    target.mkdir(parents=True, exist_ok=True)
+    shutil.copyfile(PICTURE, target / "entry.png")
 
 
 if __name__ == "__main__":
