@@ -201,15 +201,18 @@ DOTS = [
 LEADERS = {4: (-6.0, 53.5), 15: (36.5, 26.5)}
 
 MAP_LEGEND = [
+    # Geographic order (not story order): the legend reads as a list of
+    # places, with the story number in brackets at the end of each line,
+    # so the numbers never read as a broken sequence.
     ("1", "Kyiv — barrage, 8 killed"),
     ("1", "Poland — missiles land"),
     ("2", "Antalya — COP31 overtime"),
     ("3", "Brussels — UK-EU deals"),
     ("4", "London — cancer-pill trial"),
-    ("6", "Washington — FBI hack"),
-    ("7", "Hormuz — tankers hit"),
     ("8", "Riyadh — missiles downed"),
+    ("7", "Hormuz — tankers hit"),
     ("15", "Gaza — nine killed"),
+    ("6", "Washington — FBI hack"),
     ("18", "Haiti — troops fight gangs"),
     ("19", "Bayelsa — boat capsizes"),
     ("25", "Junín — quake 6.7"),
@@ -822,8 +825,9 @@ def draw_map(draw):
     lf = font(SANS, 11)
     y = 650
     for n, label in MAP_LEGEND:
-        draw.text((lx, y), n + ".", font=font(SANS_B, 11), fill=RED)
-        draw.text((lx + 26, y), label, font=lf, fill=INK)
+        draw.text((lx, y), label, font=lf, fill=INK)
+        draw.text((lx + text_w(draw, label, lf) + 5, y), "(" + n + ")",
+                  font=font(SANS_B, 11), fill=RED)
         y += 12
     hline(draw, 24, 1000, 794, width=2)
 
