@@ -401,12 +401,12 @@ def scene_kyiv(draw, x, y, w, h):
 def scene_cop(draw, x, y, w, h):
     """COP31 hall: flags, globe, setting sun, OVERTIME banner."""
     draw.rectangle([x, y, x + w, y + h], fill=(214, 196, 160))
-    # setting sun
-    draw.ellipse([x + w - 78, y + 8, x + w - 18, y + 68], fill=(230, 120, 40))
-    draw.ellipse([x + w - 70, y + 16, x + w - 26, y + 60], fill=(245, 180, 60))
-    # hall
-    draw.rectangle([x + 12, y + 58, x + w - 12, y + h - 8], fill=(120, 96, 70))
-    draw.rectangle([x + 12, y + 58, x + w - 12, y + 66], fill=(90, 70, 48))
+    # setting sun (whole: ends at y+50, above the hall, so it is never clipped)
+    draw.ellipse([x + w - 70, y + 6, x + w - 22, y + 50], fill=(230, 120, 40))
+    draw.ellipse([x + w - 63, y + 13, x + w - 29, y + 43], fill=(245, 180, 60))
+    # hall: roofline strip only (the banner covers the hall body below it)
+    draw.rectangle([x + 12, y + 52, x + w - 12, y + h - 8], fill=(120, 96, 70))
+    draw.rectangle([x + 12, y + 52, x + w - 12, y + 60], fill=(90, 70, 48))
     # globe on the podium
     gx, gy = x + 34, y + 16
     draw.ellipse([gx, gy, gx + 34, gy + 34], fill=(70, 130, 180),
